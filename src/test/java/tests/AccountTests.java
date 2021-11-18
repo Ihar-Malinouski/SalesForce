@@ -1,39 +1,29 @@
 package tests;
 
-import io.github.bonigarcia.wdm.WebDriverManager;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
+import constains.IConstains;
+import constans.ITestConstans;
+import objects.Account;
+import org.testng.Assert;
 import org.testng.annotations.Test;
-import pages.NewAccountModalPage;
+import pages.AccountListPage;
+import pages.AuthorizationPage;
 
-import java.util.concurrent.TimeUnit;
+public class AccountTests extends BaseTest{
 
-public class AccountTests {
-
-    public static final String URL = "https://tms4.my.salesforce.com/";
-    public static final String LOGIN = "ihar126-f7rs@force.com";
-    public static final String PASSWORD = "Gq2KPsXekAb*ySd%";
-
+    Account account = new Account("Ihar", "www.122.by", "Malinouski", "+375295319263",
+            "+375295319263", "45666", "966652$", "Moskov", "4445515", "Minsk", "455",
+            "123123", "Lodz", "44551234", "123",
+            "Meet my family. There are five of us – my parents, my elder brother, my baby sister and me. First, meet my mum and dad, Jane and Michael. My mum enjoys reading and my dad enjoys playing chess with my brother Ken.",
+            "Hello world", "Meet my family. There are five of us – my parents, my elder brother, my baby sister and me.", "Analyst", "Banking");
 
     @Test
-    public void createAccount() {
-        //driver settings
-        WebDriverManager.chromedriver().setup();
-        WebDriver driver = new ChromeDriver();
-        driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
-        driver.manage().window().maximize();
-
-        //login
-        driver.get(URL);
-        driver.findElement(By.id("username")).sendKeys(LOGIN);
-        driver.findElement(By.id("password")).sendKeys(PASSWORD);
-        driver.findElement(By.id("Login")).click();
-        //open new accaunt modal
-        NewAccountModalPage newAccountModalPage = new NewAccountModalPage(driver);
+    public void authorizationAccountTest() {
+        AuthorizationPage.openPage();
+        AuthorizationPage.autgorizationAccount(ITestConstans.LOGIN, ITestConstans.PASSWORD);
+        AuthorizationPage.clickAuthorizationButton();
         newAccountModalPage.openPage();
-        newAccountModalPage.create("Automation Account", "www.tut.by");
+        newAccountModalPage.createAccount(account);
+        accountListPage.openPage();
+        Assert.assertEquals(account.getAccountName(), AccountListPage.saveName());
     }
-
-
 }

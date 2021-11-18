@@ -1,11 +1,10 @@
 package elements;
 
+import constains.IModalConstants;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.support.ui.ExpectedCondition;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
-public class InputField {
+public class InputField implements IModalConstants {
     WebDriver driver;
     String label;
 
@@ -14,10 +13,7 @@ public class InputField {
         this.label = label;
     }
 
-    private static final String INPUT_XPATH = "//*[contains(text(),'%s')]/ancestor::div[contains(@class,'uiInput')]//input";
     public void writeText(String text){
-       // WebDriverWait webDriverWait = new WebDriverWait(driver, 10);
-      //  webDriverWait.until(ExpectedCondition.viv)
         driver.findElement(By.xpath(String.format(INPUT_XPATH, label))).sendKeys(text);
     }
 }
